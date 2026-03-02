@@ -33,7 +33,6 @@ export default function AIPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Navbar />
 
-      <PageTransition>
       <main className="flex-1">
         {/* Header */}
         <section className="border-b border-border/40">
@@ -152,7 +151,6 @@ export default function AIPage() {
           </section>
         )}
       </main>
-      </PageTransition>
 
       <Footer />
     </div>
