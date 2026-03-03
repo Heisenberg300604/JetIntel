@@ -30,6 +30,12 @@ export function Footer() {
           >
             Analytics
           </Link>
+          <Link
+            href="/auth/login"
+            className="text-xs text-muted-foreground transition-all duration-200 hover:text-foreground hover:-translate-y-px"
+          >
+            Login
+          </Link>
         </div>
         <p className="text-xs text-muted-foreground">
           {"Aviation Intelligence Platform"}
