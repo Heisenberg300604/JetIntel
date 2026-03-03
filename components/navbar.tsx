@@ -21,6 +21,7 @@ const navLinks = [
   { href: "/search", label: "Search" },
   { href: "/stats", label: "Stats" },
   { href: "/calculator", label: "Calculator" },
+  { href: "/auth/login", label: "Login" },
 ]
 
 export function Navbar() {
