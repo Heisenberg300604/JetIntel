@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Activity, Plane, Users, ShieldCheck, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -5,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { getJets } from "@/lib/data/jets"
 import { adminActivity, adminUsers } from "@/lib/data/admin-mock"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
 
 export default function AdminDashboardPage() {
   const jets = getJets()
@@ -34,7 +38,10 @@ export default function AdminDashboardPage() {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="flex min-h-screen flex-col bg-background">
+      <Navbar />
+      <main className="flex-1 px-4 py-8 lg:px-6">
+        <div className="space-y-6">
       <section className="rounded-xl border border-border/60 bg-linear-to-r from-primary/8 via-secondary/40 to-transparent p-6">
         <p className="text-xs font-medium uppercase tracking-widest text-primary">Control Center</p>
         <h2 className="mt-1 font-serif text-2xl font-semibold text-foreground">
@@ -121,6 +128,9 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
       </section>
+      </div>
+      </main>
+      <Footer />
     </div>
   )
 }

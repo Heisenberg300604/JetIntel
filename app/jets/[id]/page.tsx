@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { getJetById, getJets } from "@/lib/data/jets"
 import type { Jet } from "@/lib/types"
 import { Navbar } from "@/components/navbar"
@@ -81,19 +82,18 @@ export default async function JetDetailPage({
           <div className="grid gap-6 lg:grid-cols-2 items-start">
             {/* Image / carousel placeholder */}
             <div
-              className={`h-48 w-full overflow-hidden rounded-lg bg-gradient-to-br ${
+              className={`h-80 w-full overflow-hidden rounded-lg bg-gradient-to-br ${
                 categoryGradients[jet.category] || "from-muted to-secondary"
-              }`}
+              } flex items-center justify-center`}
             >
-              {/* simple overlay text for now */}
-              <div className="h-full flex flex-col items-center justify-center">
-                <p className="font-serif text-lg font-semibold text-foreground/50">
-                  {jet.manufacturer}
-                </p>
-                <p className="font-serif text-2xl font-bold text-foreground/70">
-                  {jet.model}
-                </p>
-              </div>
+              <Image
+                src="/images/G650.jpg"
+                alt={`${jet.manufacturer} ${jet.model}`}
+                width={400}
+                height={300}
+                className="h-4/5 w-auto object-contain opacity-80"
+                priority={true}
+              />
             </div>
 
             {/* Info & quick stats */}

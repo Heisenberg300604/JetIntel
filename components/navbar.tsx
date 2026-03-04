@@ -29,7 +29,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md animate-slide-down">
+    <header className="sticky top-0 inset-x-0 z-50 w-full border-b border-border/50 bg-background/90 backdrop-blur-md animate-slide-down">
       <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 lg:px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]">

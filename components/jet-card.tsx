@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import type { Jet } from "@/lib/types"
@@ -35,20 +36,18 @@ export function JetCard({ jet, index = 0 }: { jet: Jet; index?: number }) {
         <div
           className={`relative aspect-[16/10] bg-gradient-to-br ${
             categoryGradients[jet.category] || "from-muted to-secondary"
-          } overflow-hidden`}
+          } overflow-hidden flex items-center justify-center`}
         >
-          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/[0.03] to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+          <Image
+            src="/images/G650.jpg"
+            alt={`${jet.manufacturer} ${jet.model}`}
+            width={300}
+            height={200}
+            className="h-4/5 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+            priority={false}
+          />
 
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center transition-transform duration-300 group-hover:scale-105">
-              <p className="font-serif text-lg font-semibold text-foreground/60">
-                {jet.manufacturer}
-              </p>
-              <p className="font-serif text-2xl font-bold text-foreground/80">
-                {jet.model}
-              </p>
-            </div>
-          </div>
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/[0.03] to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
           <div className="absolute top-3 right-3 transition-transform duration-200 group-hover:scale-105">
             <Badge

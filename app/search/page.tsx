@@ -383,6 +383,7 @@ export default function SearchPage() {
                           key={jet.id}
                           className="cursor-pointer transition-colors hover:bg-muted/20"
                         >
+                          <TableCell className="w-10"></TableCell>
                           {/* <TableCell className="p-0">
                             <button
                               onClick={(e) => {
@@ -398,6 +399,11 @@ export default function SearchPage() {
                               )}
                             </button>
                           </TableCell> */}
+                          <TableCell className="font-medium">
+                            <Link href={`/jets/${jet.id}`} className="hover:text-primary">
+                              {jet.manufacturer} {jet.model}
+                            </Link>
+                          </TableCell>
                           <TableCell>
                             <Badge variant="outline" className="text-xs">
                               {jet.category}

@@ -1,16 +1,21 @@
+"use client"
+
 import Link from "next/link"
 import { Plane, ShieldCheck, UserRound } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Navbar } from "@/components/navbar"
 
 export default function LoginPage() {
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-background px-4 py-10">
-      <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-transparent to-transparent" />
+    <div className="flex min-h-screen flex-col bg-background">
+      <Navbar />
+      <main className="flex-1 flex items-center justify-center px-4 py-10">
+        <div className="absolute inset-0 bg-linear-to-b from-primary/5 via-transparent to-transparent" />
 
-      <Card className="relative w-full max-w-md animate-slide-up">
+        <Card className="relative w-full max-w-md animate-slide-up">
         <CardHeader className="space-y-3">
           <div className="flex items-center justify-center">
             <div className="flex size-11 items-center justify-center rounded-full bg-primary/10">
@@ -69,6 +74,7 @@ export default function LoginPage() {
           </div>
         </CardContent>
       </Card>
+      </main>
     </div>
   )
 }
