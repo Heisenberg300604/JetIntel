@@ -127,7 +127,7 @@ export default function StatsPage() {
           </div>
 
           {/* Summary Cards */}
-          <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mb-10 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
             <StatCard
               icon={Database}
               label="Total Jets"
@@ -158,7 +158,7 @@ export default function StatsPage() {
           </div>
 
           {/* Charts Grid */}
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="hidden md:grid gap-6 lg:grid-cols-2">
             {/* Range Distribution */}
             <Card className="lg:col-span-2">
               <CardHeader>
@@ -167,18 +167,18 @@ export default function StatsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={rangeConfig} className="h-[350px] w-full">
+                <ChartContainer config={rangeConfig} className="h-[250px] sm:h-[300px] lg:h-[350px] w-full">
                   <BarChart
                     data={rangeDistribution}
-                    margin={{ top: 5, right: 10, left: 10, bottom: 60 }}
+                    margin={{ top: 5, right: 10, left: 10, bottom: 40 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis
                       dataKey="name"
                       angle={-45}
                       textAnchor="end"
-                      height={60}
-                      fontSize={11}
+                      height={40}
+                      fontSize={10}
                     />
                     <YAxis fontSize={11} />
                     <ChartTooltip content={<ChartTooltipContent />} />
@@ -203,7 +203,7 @@ export default function StatsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={priceRangeConfig} className="h-[300px] w-full">
+                <ChartContainer config={priceRangeConfig} className="h-[250px] sm:h-[280px] w-full">
                   <ScatterChart margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="range" name="Range (NM)" fontSize={11} />
@@ -232,7 +232,7 @@ export default function StatsPage() {
               <CardContent>
                 <ChartContainer
                   config={passengerCostConfig}
-                  className="h-[300px] w-full"
+                  className="h-[250px] sm:h-[280px] w-full"
                 >
                   <ScatterChart margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -260,7 +260,7 @@ export default function StatsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={yearConfig} className="h-[300px] w-full">
+                <ChartContainer config={yearConfig} className="h-[250px] sm:h-[280px] w-full">
                   <AreaChart
                     data={yearTimeline}
                     margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
@@ -290,11 +290,11 @@ export default function StatsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ChartContainer config={fuelConfig} className="h-[300px] w-full">
+                <ChartContainer config={fuelConfig} className="h-[250px] sm:h-[280px] w-full">
                   <BarChart
                     data={fuelEfficiency}
                     layout="vertical"
-                    margin={{ top: 5, right: 10, left: 60, bottom: 5 }}
+                    margin={{ top: 5, right: 10, left: 50, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                     <XAxis type="number" fontSize={11} />
