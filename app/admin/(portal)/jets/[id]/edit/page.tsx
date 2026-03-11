@@ -1,21 +1,47 @@
-import { notFound } from "next/navigation"
+"use client"
+
+import { useEffect, useState } from "react"
+import { notFound, useParams } from "next/navigation"
+import { Loader2 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { JetForm } from "@/components/admin/jet-form"
-import { getJetById, getJets } from "@/lib/data/jets"
+import { getJetById } from "@/lib/api/jets"
+import type { Jet } from "@/lib/types"
 
-export function generateStaticParams() {
-  return getJets().map((jet) => ({ id: jet.id }))
-}
+export default function AdminEditJetPage() {
+  const params = useParams()
+  const id = params.id as string
+  const [jet, setJet] = useState<Jet | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [notFoundError, setNotFoundError] = useState(false)
 
-export default async function AdminEditJetPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
-  const jet = getJetById(id)
+  useEffect(() => {
+    loadJet()
+  }, [id])
 
-  if (!jet) {
+  const loadJet = async () => {
+    try {
+      const data = await getJetById(id)
+      setJet(data)
+    } catch (error: any) {
+      if (error.status === 404) {
+        setNotFoundError(true)
+      }
+      console.error("Failed to load jet:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (notFoundError || !jet) {
     notFound()
   }
 

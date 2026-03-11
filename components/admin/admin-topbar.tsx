@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, Plus, ShieldCheck } from "lucide-react"
+import { Menu, Plus, ShieldCheck, LogOut, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -11,13 +11,23 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { adminNavItems, getAdminPageTitle } from "@/components/admin/admin-nav"
+import { useAuth } from "@/lib/contexts/auth"
 import { cn } from "@/lib/utils"
 
 export function AdminTopbar() {
   const pathname = usePathname()
   const pageTitle = getAdminPageTitle(pathname)
+  const { user, logout } = useAuth()
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/50 bg-background/90 backdrop-blur-md">
@@ -75,6 +85,28 @@ export function AdminTopbar() {
             </Link>
           </Button>
           <ThemeToggle />
+
+          {/* User Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <div className="flex size-8 items-center justify-center rounded-full bg-primary/10">
+                  <User className="size-4 text-primary" />
+                </div>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="flex flex-col">
+                <span className="font-medium">{user?.name || user?.email}</span>
+                <span className="text-xs font-normal text-muted-foreground">{user?.email}</span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={logout} className="cursor-pointer text-red-600">
+                <LogOut className="mr-2 size-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
