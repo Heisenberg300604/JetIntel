@@ -8,8 +8,9 @@ import { PageTransition } from "@/components/page-transition"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getMockRecommendation } from "@/lib/data/ai-mock"
+import { getJetRecommendation } from "@/lib/api/recommend"
 import type { AIResponse } from "@/lib/types"
+import type { Jet } from "@/lib/types"
 import { Brain, Sparkles } from "lucide-react"
 
 export default function AIPage() {
@@ -17,13 +18,80 @@ export default function AIPage() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<AIResponse | null>(null)
 
+  // Parse prompt to extract parameters
+  function parsePrompt(text: string) {
+    const passengerMatch = text.match(/(\d+)\s*(?:passenger|pax|people|person)/i)
+    const passengers = passengerMatch ? parseInt(passengerMatch[1], 10) : 4
+
+    const budgetMatch = text.match(/(?:under\s*)?[\$]?(\d+)M?(?:\s*(?:million|M))?/i)
+    const budget = budgetMatch ? parseInt(budgetMatch[1], 10) : 50
+
+    // Try to extract airport codes or cities (simple heuristic)
+    const airportMatch = text.match(/([A-Z]{3}|from\s+([A-Za-z\s]+?)\s+to|to\s+([A-Za-z\s]+?)[\.,])/gi)
+    
+    return {
+      departure: "JFK",
+      arrival: "LHR",
+      passengers,
+      budget,
+    }
+  }
+
   async function handleEvaluate() {
     if (!prompt.trim()) return
     setLoading(true)
     setResult(null)
     try {
-      const response = await getMockRecommendation(prompt)
+      const params = parsePrompt(prompt)
+      const jets = await getJetRecommendation(
+        params.departure,
+        params.arrival,
+        params.passengers,
+        params.budget
+      )
+
+      if (jets.length === 0) {
+        setResult(null)
+        return
+      }
+
+      // Transform API response to AIResponse format
+      const primary = jets[0]
+      const alternatives = jets.slice(1, 3)
+
+      const response: AIResponse = {
+        missionSummary: `Based on your requirements for ${params.passengers} passengers with a budget of $${params.budget}M, I've found ${jets.length} suitable aircraft in our fleet.`,
+        primary: {
+          id: primary.id,
+          name: `${primary.manufacturer} ${primary.model}`,
+          category: primary.category,
+          match_score: 95,
+          key_points: [
+            `Range: ${primary.range_nm.toLocaleString()} NM`,
+            `Cruise Speed: ${primary.cruise_knots} knots`,
+            `Passengers: Up to ${primary.max_passengers}`,
+            `Price: $${primary.price_new_million}M`,
+          ],
+          reason: `The ${primary.model} is an excellent fit for your mission requirements, offering the ideal balance of range, capacity, and operating costs.`,
+        },
+        alternatives: alternatives.map((jet) => ({
+          id: jet.id,
+          name: `${jet.manufacturer} ${jet.model}`,
+          category: jet.category,
+          match_score: 85,
+          key_points: [
+            `Range: ${jet.range_nm.toLocaleString()} NM`,
+            `Cruise Speed: ${jet.cruise_knots} knots`,
+            `Passengers: Up to ${jet.max_passengers}`,
+            `Price: $${jet.price_new_million}M`,
+          ],
+          reason: `This aircraft offers comparable capabilities with different trade-offs in range and passenger capacity.`,
+        })),
+      }
+
       setResult(response)
+    } catch (error) {
+      console.error("Failed to get recommendations:", error)
     } finally {
       setLoading(false)
     }

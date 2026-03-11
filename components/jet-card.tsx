@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import Image from "next/image"
-import { Badge } from "@/components/ui/badge"
-import { Card } from "@/components/ui/card"
-import type { Jet } from "@/lib/types"
-import { Gauge, Users, Navigation, DollarSign } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import type { Jet } from "@/lib/types";
+import { Gauge, Users, Navigation, DollarSign } from "lucide-react";
 
 const categoryColors: Record<string, string> = {
   Light: "bg-chart-2/15 text-chart-2 border-chart-2/20",
@@ -13,7 +14,7 @@ const categoryColors: Record<string, string> = {
   "Super Midsize": "bg-chart-3/15 text-chart-3 border-chart-3/20",
   Heavy: "bg-chart-1/15 text-chart-1 border-chart-1/20",
   "Ultra Long Range": "bg-chart-5/15 text-chart-5 border-chart-5/20",
-}
+};
 
 const categoryGradients: Record<string, string> = {
   Light: "from-chart-2/20 via-chart-4/10 to-muted",
@@ -21,9 +22,15 @@ const categoryGradients: Record<string, string> = {
   "Super Midsize": "from-chart-3/20 via-chart-1/10 to-muted",
   Heavy: "from-chart-1/20 via-chart-5/10 to-muted",
   "Ultra Long Range": "from-primary/20 via-chart-1/10 to-muted",
-}
+};
 
 export function JetCard({ jet, index = 0 }: { jet: Jet; index?: number }) {
+  const [imgError, setImgError] = useState(false);
+  const imageSrc =
+    !imgError && jet.image_url && jet.image_url.startsWith("http")
+      ? jet.image_url
+      : "/images/G650.jpg";
+
   return (
     <Link
       href={`/jets/${jet.id}`}
@@ -31,7 +38,6 @@ export function JetCard({ jet, index = 0 }: { jet: Jet; index?: number }) {
       style={{ animationDelay: `${index * 80}ms` }}
     >
       <Card className="overflow-hidden bg-card p-0 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 border border-border/60 hover:border-primary/20">
-        
         {/* Image / Header */}
         <div
           className={`relative aspect-[16/10] bg-gradient-to-br ${
@@ -39,12 +45,13 @@ export function JetCard({ jet, index = 0 }: { jet: Jet; index?: number }) {
           } overflow-hidden flex items-center justify-center`}
         >
           <Image
-            src="/images/G650.jpg"
+            src={imageSrc}
             alt={`${jet.manufacturer} ${jet.model}`}
             width={300}
             height={200}
             className="h-4/5 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
             priority={false}
+            onError={() => setImgError(true)}
           />
 
           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/[0.03] to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -102,5 +109,5 @@ export function JetCard({ jet, index = 0 }: { jet: Jet; index?: number }) {
         </div>
       </Card>
     </Link>
-  )
+  );
 }
